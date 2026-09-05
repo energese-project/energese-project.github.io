@@ -106,7 +106,42 @@ changes, change the paper first and the page second.
 Repository facts — DOIs, links, blurbs — live in
 [`src/data/projects.ts`](src/data/projects.ts), not scattered through markup.
 
-## 9. Deployment
+## 9. Design tokens
+
+The palette lives in [`src/styles/energese.css`](src/styles/energese.css) and
+**this is the canonical copy**. A byte-identical duplicate sits in the GSSK
+repository at `web/energese.css`, where it styles the docs site and the WASM
+demo.
+
+Duplicated rather than published as a package, deliberately: GSSK's demo has no
+build step — its deploy workflow copies `web/index.html` into the Pages artifact
+as a raw file — so a shared package would mean adding npm to a C99 kernel whose
+releases are archived and citable. The file's header states this, and carries
+`--e-tokens-version` so a stale copy is visible rather than silent.
+
+**Changing a colour is a two-repository change.** Edit this copy, bump
+`--e-tokens-version`, copy the whole file to GSSK, and open a PR in both. Never
+patch one side in place — `diff` should report the two files identical, header
+included.
+
+Two rules that are not stylistic:
+
+- **`--e-series-1` … `--e-series-8` and their order** are a colour-blindness
+  safety mechanism, chosen by running candidate orderings through a validator
+  and keeping only those clearing every adjacent-pair gate in both modes.
+  Reordering or extending them breaks that silently — the chart still renders.
+- **Nothing may hardcode a colour.** `bg-white`, `text-white` and `fill="#fff"`
+  all survive a token migration untouched and then glow white on a dark page.
+  The pipeline diagram shipped exactly that bug;
+  [`e2e/theming.spec.ts`](e2e/theming.spec.ts) is what caught it and what keeps
+  it out.
+
+Anything that pairs a foreground with a background must use tokens that
+**invert together**. The primary button is `--e-accent` on `--e-ground`, not
+white on `--e-ink`: `--e-ink` is near-white in dark mode, so the second pairing
+inverts into white-on-white.
+
+## 10. Deployment
 
 `main` → [`deploy.yml`](.github/workflows/deploy.yml) → GitHub Pages. The workflow copies
 `dist/index.html` to `dist/404.html`; that copy is the only reason a client-side route survives

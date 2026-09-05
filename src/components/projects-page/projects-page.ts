@@ -22,7 +22,7 @@ export class ProjectsPage extends BaseComponent {
   private card(project: (typeof projects)[number]): string {
     const links = [{ label: 'Repository', href: project.repo }, ...project.links];
     return html`
-      <article class="rounded-xl border border-[var(--e-rule)] bg-white p-7">
+      <article class="rounded-xl border border-[var(--e-rule)] bg-[var(--e-surface)] p-7">
         <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <h2 class="text-xl font-semibold tracking-tight">${project.name}</h2>
           <span class="rounded-full bg-[var(--e-accent-soft)] px-2.5 py-0.5 text-xs font-medium text-[var(--e-accent)]">
