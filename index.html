@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' ws:; base-uri 'none'; form-action 'none'; frame-ancestors 'none';"
+    />
+    <title>Energese Project</title>
+    <meta
+      name="description"
+      content="Energese is a toolchain for Howard T. Odum's Energy Systems Language: a simulation kernel, a diagram language, and an editor that share one model format."
+    />
+    <meta property="og:title" content="Energese Project" />
+    <meta
+      property="og:description"
+      content="One model, three uses: simulate it, draw it, publish it. Odum's Energy Systems Language as executable, citable software."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://energese-project.github.io/" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='13' fill='none' stroke='%230f766e' stroke-width='3'/%3E%3Cpath d='M3 16h26' stroke='%230f766e' stroke-width='3'/%3E%3C/svg%3E" />
+    <script type="module" src="/src/main.ts"></script>
+  </head>
+  <body>
+    <site-nav></site-nav>
+    <div id="router-outlet"></div>
+    <site-footer></site-footer>
+  </body>
+</html>

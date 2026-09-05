@@ -1,0 +1,27 @@
+{
+  "name": "energese-project-site",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Project homepage for the Energese Project",
+  "engines": {
+    "node": ">=25.0.0"
+  },
+  "scripts": {
+    "dev": "vite --host",
+    "start": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview --host --port 4173",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test \"src/**/*.test.ts\"",
+    "e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "@tailwindcss/vite": "^4.3.2",
+    "@types/node": "^26.1.1",
+    "tailwindcss": "^4.3.2",
+    "typescript": "^5.9.3",
+    "vite": "^8.1.4"
+  }
+}

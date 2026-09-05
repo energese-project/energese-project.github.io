@@ -1,0 +1,21 @@
+:host {
+  display: block;
+}
+
+:host .nav-link {
+  color: var(--e-muted);
+  padding-bottom: 2px;
+  border-bottom: 2px solid transparent;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+:host .nav-link:hover {
+  color: var(--e-ink);
+}
+
+:host .nav-link[aria-current='page'] {
+  color: var(--e-ink);
+  border-bottom-color: var(--e-accent);
+}

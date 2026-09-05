@@ -1,0 +1,73 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# A queued deploy is superseded by a newer one, but an in-flight deploy is left
+# to finish: cancelling one midway can leave the site partly published.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build and verify
+    runs-on: ubuntu-latest
+    container: mcr.microsoft.com/playwright:v1.63.0-noble
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      # The same suite the PR ran, against the artifact about to be published.
+      # CI passing on the merge commit is not the same fact as this bundle
+      # working, and this is the last point at which the difference is cheap.
+      - name: End-to-end tests
+        run: npm run e2e
+
+      # Client-side routing on Pages: any path that is not a file gets 404.html,
+      # so 404.html has to be the app itself. With `base: '/'` in vite.config.js
+      # the asset URLs inside it resolve from any depth.
+      - name: Serve every route from the app shell
+        run: cp dist/index.html dist/404.html
+
+      # Without this, Jekyll processes the output and drops anything whose name
+      # begins with an underscore.
+      - name: Disable Jekyll
+        run: touch dist/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
