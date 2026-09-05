@@ -1,0 +1,29 @@
+@import 'tailwindcss';
+
+/* Odum drew on paper: ink on a warm ground, one accent for flow. The palette
+   is deliberately narrow — the diagrams carry the colour, the page does not. */
+:root {
+  --e-ink: #14201f;
+  --e-muted: #4f625f;
+  --e-accent: #0f766e;
+  --e-accent-soft: #ccfbf1;
+  --e-ground: #fbfaf7;
+  --e-rule: #e3e0d8;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--e-ground);
+  color: var(--e-ink);
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+#router-outlet {
+  flex: 1 0 auto;
+}

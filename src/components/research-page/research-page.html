@@ -1,0 +1,112 @@
+<section class="mx-auto max-w-3xl px-6 pt-16 pb-8">
+  <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight">Research</h1>
+  <p class="mt-4 text-lg leading-relaxed text-[var(--e-muted)]">
+    The software exists because a question needed settling, and settling it required a kernel
+    that could actually run the models.
+  </p>
+
+  <article class="prose mt-12">
+    <h2 class="text-xl font-semibold tracking-tight">
+      Three Accountings, One Model
+    </h2>
+    <p class="!mt-1 text-sm text-[var(--e-muted)]">
+      Reconciling Odum&rsquo;s Dynamics, Emergy, and IFRS/AASB Financial Reporting &mdash;
+      Sholto Maud. Companion to ADR 0009.
+    </p>
+
+    <p>
+      A model is a system of ordinary differential equations describing flows of energy, matter
+      and money through a network of storages. Over that same network, emergy accounting values
+      those flows by the energy embodied in producing them, under an algebra of its own. A
+      general ledger is a third thing again: discrete, exactly balancing entries recognised
+      under a body of accounting standards. The premise is that one artefact can serve all
+      three purposes without deforming any of them.
+    </p>
+    <p>
+      The reconciliation turns on a single algebraic distinction. The quantities travelling a
+      pathway divide into <strong class="text-[var(--e-ink)]">extensive</strong> ones, which add
+      over subsystems and enter the dynamics as summands, and
+      <strong class="text-[var(--e-ink)]">intensive ratios</strong>, which do not add and enter
+      as multiplicands. Because zero is the identity for addition and the annihilator for
+      multiplication, that one test decides both what may be posted to a ledger and where a
+      kernel may supply a default.
+    </p>
+    <p>
+      The organising resolution is that a simulated trajectory is
+      <em>evidence from which entries are derived</em>, not the authoritative record itself. A
+      numerical solver is accurate to a stated tolerance; a ledger must balance to the last
+      cent. The two stay separate artefacts joined by an explicit conversion procedure.
+    </p>
+
+    <h3>Where it does not hold</h3>
+    <p>
+      The argument covers conservative extensive carriers &mdash; mass, energy, goods, money
+      &mdash; and not carriers that are consumed rather than transferred, or that can be minted
+      and burned. And the kernel implements the half of the emergy algebra that breaks
+      additivity without the rule that bounds it: on any topology where co-product pathways
+      recombine, it overstates transformity by a factor equal to the number of reuniting
+      branches. It is a faithful simulator of Odum&rsquo;s dynamics, and it is
+      <strong class="text-[var(--e-ink)]">not yet</strong> a faithful implementation of his
+      emergy algebra. That is stated here rather than left to be discovered.
+    </p>
+
+    <h3>What it costs</h3>
+    <p>
+      A consumer who wants books runs the conversion procedure themselves, because the kernel
+      will not. Within a period already reported, the endogenous pricing that lets inflation
+      emerge from the model must be switched off, and prices there are historical data. Revenue
+      recognised at a single instant rather than progressively cannot presently be expressed at
+      all. Emergy is excluded from the ledger permanently rather than pending further work
+      &mdash; a consequence of arithmetic, not of the standards omitting it.
+    </p>
+
+    <h3>How to refute it</h3>
+    <p>
+      Every quantitative claim is the output of a program, and the program is public. Where the
+      document says a number comes out one way, that is checkable by running it, and someone who
+      makes it come out another way has refuted the claim rather than disagreed with it. The
+      central negative result &mdash; a disagreement with Campbell&rsquo;s 2013 construction on
+      one of its three parts &mdash; is stated in exactly that form, with the experiment that
+      would overturn it.
+    </p>
+    <p class="!mt-6">
+      <a
+        href="https://github.com/energese-project/GSSK/blob/main/doco/conformance.tex"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="text-[var(--e-accent)] underline underline-offset-2"
+        >Read the source of the paper &rarr;</a
+      >
+    </p>
+  </article>
+</section>
+
+<section class="border-t border-[var(--e-rule)] bg-white">
+  <div class="mx-auto max-w-3xl px-6 py-14">
+    <h2 class="text-xl font-semibold tracking-tight">Citing this work</h2>
+    <p class="mt-4 leading-relaxed text-[var(--e-muted)]">
+      Each release is archived on Zenodo. The badges below resolve to
+      <strong class="text-[var(--e-ink)]">concept DOIs</strong>, which always redirect to the
+      most recent release &mdash; cite those when you mean the ongoing work. To pin a result to
+      the exact code that produced it, cite the <strong class="text-[var(--e-ink)]">version
+      DOI</strong> of the release instead; every release is minted its own, and they are listed
+      under <em>Versions</em> on the Zenodo record. Reproducibility claims need the version DOI,
+      because the concept DOI moves with each release.
+    </p>
+    <ul class="mt-6 space-y-3 text-sm">
+      <li>
+        <span class="font-semibold">GSSK</span> &mdash;
+        <a href="https://doi.org/10.5281/zenodo.22339312" target="_blank" rel="noopener noreferrer" class="text-[var(--e-accent)] underline underline-offset-2">10.5281/zenodo.22339312</a>
+      </li>
+      <li>
+        <span class="font-semibold">latex-energese</span> &mdash;
+        <a href="https://doi.org/10.5281/zenodo.22340275" target="_blank" rel="noopener noreferrer" class="text-[var(--e-accent)] underline underline-offset-2">10.5281/zenodo.22340275</a>
+      </li>
+    </ul>
+    <p class="mt-6 text-sm leading-relaxed text-[var(--e-muted)]">
+      Each repository carries a <code class="rounded bg-[var(--e-ground)] px-1.5 py-0.5 font-mono text-xs">CITATION.cff</code>;
+      GitHub renders it under <em>Cite this repository</em>, and Zenodo reads it when minting
+      each deposit.
+    </p>
+  </div>
+</section>

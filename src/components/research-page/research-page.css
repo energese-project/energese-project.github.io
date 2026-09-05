@@ -1,0 +1,15 @@
+:host {
+  display: block;
+}
+
+:host .prose p {
+  margin-top: 1rem;
+  line-height: 1.75;
+  color: var(--e-muted);
+}
+
+:host .prose h3 {
+  margin-top: 2.25rem;
+  font-weight: 600;
+  color: var(--e-ink);
+}

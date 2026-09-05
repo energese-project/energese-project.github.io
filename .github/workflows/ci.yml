@@ -1,0 +1,68 @@
+name: CI
+
+# `branches` under `pull_request` filters on the PR's BASE, not its head.
+# Listing only `main` means a PR stacked on another feature branch runs none of
+# these jobs while still showing as checked — the "tested by nothing" state a
+# bare push produces, wearing a passing badge. The prefixes below are the ones
+# AGENTS.md defines for branches.
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches:
+      - main
+      - 'feat/**'
+      - 'fix/**'
+      - 'docs/**'
+      - 'chore/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Typecheck, unit, e2e
+    runs-on: ubuntu-latest
+    # Pinned to the same Playwright version as package.json and the
+    # Containerfile. All three move together or the browser and the client
+    # disagree about the protocol.
+    container: mcr.microsoft.com/playwright:v1.63.0-noble
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      # The e2e project named `production` builds again and serves dist/ through
+      # `serve -s`, which rewrites unknown paths to index.html the way Pages
+      # does via the 404.html copy. That is what makes the deep-link test
+      # meaningful rather than a test of Vite's dev fallback.
+      - name: End-to-end tests
+        run: npm run e2e
+
+      - name: Upload Playwright report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

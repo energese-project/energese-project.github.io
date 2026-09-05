@@ -1,0 +1,60 @@
+<section class="mx-auto max-w-3xl px-6 pt-16 pb-12">
+  <h1 class="text-3xl sm:text-4xl font-semibold tracking-tight">About</h1>
+
+  <h2 class="mt-10 text-xl font-semibold tracking-tight">The language</h2>
+  <p class="mt-4 leading-relaxed text-[var(--e-muted)]">
+    Howard T. Odum&rsquo;s Energy Systems Language is a graphical language for modelling flows
+    of energy, matter, money and information through complex systems (Odum &amp; Odum, 2000).
+    Its discipline is a rule about what a drawing may say:
+  </p>
+  <blockquote class="mt-5 border-l-2 border-[var(--e-accent)] pl-5 leading-relaxed text-[var(--e-muted)]">
+    <strong class="text-[var(--e-ink)]">Edges are flows only</strong> &mdash; pathways carrying
+    energy, matter, money, information or code from one unit to another.
+    <strong class="text-[var(--e-ink)]">Nodes are everything else</strong> &mdash; processing
+    units, storages, sources, sinks, gates, amplifiers, converters and transaction points. Even
+    when a node has no dynamics beyond a fixed coefficient <em>k</em>, that coefficient is the
+    <em>state</em> of the node: it is a property of the unit, not of the flow passing through it.
+  </blockquote>
+  <p class="mt-5 leading-relaxed text-[var(--e-muted)]">
+    Odum&rsquo;s fundamental symbols are implemented as node primitives, each with defined
+    semantics rather than a picture:
+  </p>
+
+  <div class="mt-6 overflow-x-auto rounded-xl border border-[var(--e-rule)] bg-white">
+    <table class="w-full min-w-[520px] text-sm">
+      <thead class="border-b border-[var(--e-rule)] text-left">
+        <tr class="text-[var(--e-muted)]">
+          <th class="px-5 py-3 font-medium">Odum symbol</th>
+          <th class="px-5 py-3 font-medium">Name</th>
+          <th class="px-5 py-3 font-medium">Type</th>
+        </tr>
+      </thead>
+      <tbody id="symbol-rows" class="divide-y divide-[var(--e-rule)]"></tbody>
+    </table>
+  </div>
+  <p class="mt-4 text-sm leading-relaxed text-[var(--e-muted)]">
+    An unrecognised type string is rejected at load time, naming the node and the offending
+    string, so a typo fails loudly instead of quietly becoming a storage node.
+  </p>
+
+  <h2 class="mt-14 text-xl font-semibold tracking-tight">How it is built</h2>
+  <p class="mt-4 leading-relaxed text-[var(--e-muted)]">
+    One C99 core, deployed to native, WebAssembly, Swift, Python and JavaScript. The kernel is
+    deliberately not a general-purpose ODE library &mdash; no stiff-solver zoo, no symbolic
+    Jacobian engine, no automatic differentiation framework, no GUI builder. The schema is the
+    interface contract, and visualisation is a downstream concern.
+  </p>
+  <p class="mt-4 leading-relaxed text-[var(--e-muted)]">
+    Everything is MIT licensed and developed in the open at
+    <a href="https://github.com/energese-project" target="_blank" rel="noopener noreferrer" class="text-[var(--e-accent)] underline underline-offset-2">github.com/energese-project</a>.
+    Issues and pull requests are welcome on each repository; the contribution standards live in
+    the <code class="rounded bg-white px-1.5 py-0.5 font-mono text-xs">AGENTS.md</code> at each
+    repository root.
+  </p>
+
+  <h2 class="mt-14 text-xl font-semibold tracking-tight">Reference</h2>
+  <p class="mt-4 leading-relaxed text-[var(--e-muted)]">
+    Odum, H.T. &amp; Odum, E.C. (2000). <em>Modeling for All Scales: An Introduction to System
+    Simulation.</em> Academic Press.
+  </p>
+</section>
