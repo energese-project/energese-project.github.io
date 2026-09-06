@@ -1,0 +1,140 @@
+\documentclass[3p,times,authoryear]{elsarticle}
+
+% ---------------------------------------------------------------------------
+% Prepared for submission to Ecological Modelling (Elsevier format)
+% ---------------------------------------------------------------------------
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage[hidelinks]{hyperref}
+
+\newcommand{\gssk}{\textsc{gssk}}
+\newcommand{\esl}{\textsc{esl}}
+\newcommand{\idc}{\textsc{idc}}
+\newcommand{\emsim}{\textsc{EmSim}}
+\newcommand{\latexenergese}{\texttt{latex-energese}}
+\newcommand{\code}[1]{\texttt{\small #1}}
+
+\journal{Ecological Modelling}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Architectural precedents in systems ecology modelling: A retrospective analysis of the Emergy Simulator (\emsim) and implications for the Energese project}
+
+\author{Sholto Maud}
+\affiliation{organization={Energese Project}, city={Sydney}, country={Australia}}
+
+\begin{abstract}
+The computational formalisation of Odum's Energy Systems Language (\esl) remains a persistent challenge in ecological modelling. In 2004, \citet{valyi2004} introduced \emsim, an open-source Java implementation designed to translate \esl{} diagrams into ordinary differential equations (\textsc{ode}s), integrate them, and propagate emergy across the resulting network. Two decades later, the Energese project (\gssk) attempts to solve the same fundamental parametric and topological problems. This paper presents a comparative architectural analysis of \emsim{} and \gssk. We evaluate the transition from embedded expression parsers to closed-vocabulary schemas, the algorithmic trade-offs between path enumeration and linear solvers for emergy propagation, and the shift in focus from file exchange to bit-identical execution reproducibility. The analysis demonstrates that while contemporary frameworks benefit from modern data schemas and deterministic runtimes, \emsim's 2004 implementation of Odum's co-product allocation rules via path enumeration remains a critical benchmark that current linear-solve architectures have yet to fully replicate. This retrospective aims to ground future \esl{} software development in established computational precedents.
+\end{abstract}
+
+\begin{keyword}
+Energy Systems Language \sep Systems Ecology \sep Emergy \sep Ecological Modelling \sep Software Architecture
+\end{keyword}
+
+\end{frontmatter}
+
+\section{Introduction}
+\label{sec:intro}
+
+The standardisation of systems ecology models requires robust computational frameworks capable of translating qualitative diagrams into quantitative, reproducible simulations. H.T. Odum's Energy Systems Language (\esl) provides a rigorous thermodynamic and parametric vocabulary for this purpose \citep{odum1994,odum1996}. However, the translation of \esl{} diagrams into executable ordinary differential equations (\textsc{ode}s) has historically been ad hoc, often relying on commercial software that obscures the underlying network algebra \citep{valyi2004}.
+
+The Emergy Simulator (\emsim), developed by \citet{valyi2004}, represents one of the earliest comprehensive attempts to build a dedicated, open-source computational platform for \esl. \emsim{} was designed to parse diagrams, generate \textsc{ode}s, execute numerical integration, and calculate emergy transformities dynamically. Currently, the Energese project (comprising the \gssk{} C99 kernel, a LuaLaTeX drawing package, and a browser-based editor) is developing a contemporary infrastructure with identical core objectives. 
+
+This paper analyses the \emsim{} specification as a design precedent. By comparing the algorithmic and architectural decisions documented by \citet{valyi2004} against the current \gssk{} implementation, we identify persistent challenges in ecological systems modelling, specifically concerning network algebra, numerical integration, and execution reproducibility.
+
+\section{Core Motivations for Computational \esl}
+\label{sec:motivations}
+
+\citet{valyi2004} articulated six primary motivations for \emsim, which remain highly relevant to contemporary systems ecology:
+\begin{enumerate}
+    \item \textbf{Standardisation:} Models require open implementations and specific file formats to be shareable and subject to peer review.
+    \item \textbf{Independence:} Modelling should not depend on proprietary commercial software.
+    \item \textbf{Deterministic Translation:} The translation of diagrams to \textsc{ode}s must follow strict, automated rules rather than ad hoc transcription.
+    \item \textbf{Dynamic Transformity:} Transformities must be computed within the specific system context rather than imported from static tables, which risks double-counting and invalidates emergy indicators.
+    \item \textbf{Extensibility:} Software must be modular and open-source to support cooperative academic development.
+    \item \textbf{Portability:} The platform must run across different operating systems.
+\end{enumerate}
+
+The Energese project shares these foundational requirements. However, the computational methods used to achieve them have evolved. The following sections detail the architectural divergences between the two approaches.
+
+\section{Comparative Architectural Analysis}
+\label{sec:architecture}
+
+\subsection{Data Structures and Persistence}
+\emsim{} utilised an XML formalism, serialising the Java object graph (JavaBeans) to store view attributes, graph topology, and mathematical models (including behavioural methods) within each node \citep{valyi2004}. While XML provided human readability, coupling the file format directly to the Java class graph created fragility; the semantics of the model were dependent on the presence of specific Java classes at runtime.
+
+In contrast, \gssk{} separates the model definition from the runtime environment using a strict JSON Schema (\code{gssk.schema.json}). Behaviour is not stored as executable code within the file. Instead, the schema defines a closed vocabulary of declarations (e.g., nine primitive node types). This ensures that the model document acts as a pure parametric specification, independent of the C99 kernel that executes it.
+
+\subsection{Mathematical Evaluation and Parsing}
+To evaluate user-defined expressions, \emsim{} embedded the FrAid solver, allowing arbitrary mathematical formulae (e.g., polynomials, trigonometry) \citep{valyi2004}. While highly flexible, arbitrary string parsing introduces significant limitations: it inhibits symbolic analysis (such as automated Jacobian derivation or conservation checks) and introduces floating-point evaluation ambiguities across different hardware.
+
+\gssk{} replaces the arbitrary parser with closed enumerations: eight edge logics (e.g., \code{constant}, \code{linear}, \code{interaction}, \code{reversible}) and eight forcing waveforms. While this restricts the modeller to a predefined mathematical vocabulary, it guarantees that every model in the corpus is analytically tractable. Furthermore, it allows the kernel to identify linear states and apply exact integration methods, a guarantee that cannot be made when parsing arbitrary strings.
+
+\subsection{Emergy Propagation and Network Algebra}
+The most significant algorithmic divergence between \emsim{} and \gssk{} lies in the propagation of emergy across complex networks, specifically regarding Odum's rules for co-production. 
+
+Odum stipulates that when a process yields multiple by-products, each by-product carries the total emergy of the inputs; however, if these by-products later recombine, their emergy must not be double-counted \citep{odum1996, brown1996}. \citet{valyi2004} implemented this by enumerating all pathways from a source to a target. The algorithm sorted pathways into co-produced sets and retained only the maximum emergy contribution from each set, effectively preventing double-counting. 
+
+While mathematically faithful to Odum's rules, path enumeration scales exponentially ($O(2^n)$) in dense networks, leading to severe performance bottlenecks. Consequently, the field largely shifted toward matrix and eigenvector approaches \citep{collins2000}. 
+
+\gssk{} currently utilises a linear solve for quality propagation. While computationally efficient and exact for flow splits, this approach currently fails to implement the bounding rule for co-products. If $n$ co-product pathways recombine at a node in \gssk, the node incorrectly reports the sum of the copies rather than the maximum. Therefore, \emsim's 2004 implementation remains algorithmically superior in its adherence to \esl{} rules, highlighting a critical area for future \gssk{} development. A proposed solution involves a longest-path computation in the $(\max,+)$ semiring per source, which would preserve provenance without the exponential cost of full path enumeration.
+
+\subsection{Discontinuities and Numerical Integration}
+\emsim{} handled discontinuous variations using a switch component that generated an ``almost infinite'' slope, integrated via a fixed-step 4th-order Runge-Kutta (RK4) method \citep{valyi2004}. This approach introduces stiffness; fixed-step explicit integrators struggle with near-infinite slopes, resulting in trajectory errors depending on where the step boundaries fall.
+
+\gssk{} implements strict \code{switch} nodes and \code{threshold} logics. If a condition flips within a time step (\code{dt}), the integration proceeds as though the state remained on its initial side until the next boundary. While this bounds the residual error and makes it predictable, \gssk{} currently lacks event detection or step-boundary refinement. Both systems highlight the inherent difficulty of modelling discrete events in continuous ecological simulations.
+
+\section{Reproducibility and Software Longevity}
+\label{sec:reproducibility}
+
+A critical omission in the 2004 \emsim{} specification is the concept of execution reproducibility. \citet{valyi2004} focused extensively on sharing model files, but did not address determinism, random seed capture, or floating-point consistency. In computational modelling, a shared file is insufficient if the execution environment cannot be exactly replicated to audit the resulting emergy indicators.
+
+\gssk{} treats bit-identical reproduction as a baseline requirement. Nondeterminism is strictly avoided, structural mutations are logged, and stochastic runs draw from an instance-owned SplitMix64 generator with captured seeds and stream positions. 
+
+Furthermore, the decay of \emsim's software dependencies (Java applets, specific JGraphpad versions) demonstrates that software applications are ephemeral. \gssk's reliance on C99 and WebAssembly is an attempt to target stable, low-level standards rather than vendor-specific runtimes. The archival unit of ecological modelling must be the model document and its schema specification, not the executable program.
+
+\section{Discussion and Future Directions}
+\label{sec:discussion}
+
+\citet{valyi2004} noted suggestions by \citet{giannantoni2002} regarding the necessity of accumulation terms and fractional calculus for dynamic empower studies. \emsim{} lacked the solvers to implement this. \gssk{} has since implemented the Incipient Differential Calculus (\idc) \citep{giannantoni2006}, providing exact closed-form integration for isolated interactions and Padé-(3,3) matrix exponentials for cyclic networks. However, the theoretical debate regarding accumulation terms remains open, and \gssk{} records discrepancies between classical RK4 and \idc{} as observable confidence flags rather than resolved scientific consensus.
+
+Moving forward, the Energese project must address the co-product double-counting defect in its linear solver. Additionally, while \emsim{} proposed embedding statistical distributions and confidence intervals directly into the model data structure for stochastic simulation, \gssk{} currently handles stochasticity externally via ensemble forecasting. Integrating parameter uncertainty directly into the \gssk{} JSON schema represents a logical next step.
+
+\section{Conclusion}
+\label{sec:conclusion}
+
+The 2004 \emsim{} project accurately identified the primary computational bottlenecks in systems ecology: the need for deterministic \textsc{ode} translation, dynamic transformity calculation, and the prevention of double-counting in co-production networks. While modern frameworks like \gssk{} offer superior data schemas, deterministic execution, and advanced calculus implementations, \emsim's path-enumeration approach to Odum's co-product rules remains a vital benchmark. By treating historical software implementations as rigorous design precedents, contemporary ecological modelling can avoid repeating past architectural compromises and build more robust, auditable tools for sustainable development analysis.
+
+\begin{thebibliography}{7}
+
+\bibitem[{Brown and Herendeen(1996)}]{brown1996}
+Brown, M.\,T., Herendeen, R.\,A., 1996. Embodied energy analysis and emergy analysis: a comparative view. Ecological Economics 19(3), 219--235.
+
+\bibitem[{Collins and Odum(2000)}]{collins2000}
+Collins, D., Odum, H.\,T., 2000. Calculating Transformities with an Eigenvector Method. Center for Environmental Policy, University of Florida, Gainesville, FL.
+
+\bibitem[{Giannantoni(2002)}]{giannantoni2002}
+Giannantoni, C., 2002. The Maximum Em-Power Principle as the Basis for Thermodynamics of Quality. Servizi Grafici Editoriali, Padua.
+
+\bibitem[{Giannantoni(2006)}]{giannantoni2006}
+Giannantoni, C., 2006. Mathematics for generative processes: living and non-living systems. Journal of Computational and Applied Mathematics 189(1--2), 324--340.
+
+\bibitem[{Odum(1994)}]{odum1994}
+Odum, H.\,T., 1994. Ecological and General Systems: An Introduction to Systems Ecology. University Press of Colorado, Niwot.
+
+\bibitem[{Odum(1996)}]{odum1996}
+Odum, H.\,T., 1996. Environmental Accounting: Emergy and Environmental Decision Making. John Wiley \& Sons, New York.
+
+\bibitem[{Valyi and Ortega(2004)}]{valyi2004}
+Valyi, R., Ortega, E., 2004. Emergy simulator, an open source simulation platform dedicated to systems ecology and emergy studies. In: Ortega, E., Ulgiati, S. (Eds.), Proceedings of the IV Biennial International Workshop ``Advances in Energy Studies''. Unicamp, Campinas, SP, Brazil, pp. 349--360.
+
+\end{thebibliography}
+
+\end{document}

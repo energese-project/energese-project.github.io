@@ -1,0 +1,15 @@
+# The source PDF is a third-party conference paper kept locally for reference.
+# It is not ours to redistribute, so it stays out of the repository.
+*.pdf
+
+# latexmk / pdflatex output. article.tex is the artefact; the PDF is built.
+build/
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.toc
+*.spl

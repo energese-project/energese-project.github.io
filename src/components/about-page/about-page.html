@@ -52,9 +52,54 @@
     repository root.
   </p>
 
+  <h2 class="mt-14 text-xl font-semibold tracking-tight">Precedent</h2>
+  <p class="mt-4 leading-relaxed text-[var(--e-muted)]">
+    This is a second attempt at a programme someone else wrote down first. In 2004 Rapha&euml;l
+    Valyi and Enrique Ortega described <em>EmSim</em>, an open-source Java implementation of the
+    Energy Systems Language that drew diagrams, translated them into differential equations,
+    integrated them, and propagated emergy across the resulting network. The six motivations they
+    gave for building it transfer almost unaltered: models are not shareable without a standard,
+    a diagram is not a specification until the translation to equations is fixed, transformity
+    values are being lifted from published tables into systems where they do not belong, and none
+    of it is fixable inside commercial software.
+  </p>
+  <p class="mt-4 leading-relaxed text-[var(--e-muted)]">
+    That the same list can be written twice, twenty-two years apart, is worth stating plainly
+    rather than presenting the motivations as new. One item has been added to it. EmSim solved
+    <em>sharing</em> a model and never asked about <em>re-executing</em> one &mdash; determinism,
+    seeding and version pinning appear nowhere in the paper &mdash; and its own history shows the
+    difference: the files are still downloadable, and the runtime that reads them is what decayed.
+    An emergy figure derived from a simulated trajectory is the output of an execution, not a
+    document, and a figure that cannot be regenerated cannot be audited.
+  </p>
+  <p class="mt-4 leading-relaxed text-[var(--e-muted)]">
+    EmSim is also ahead of this kernel in one place. It implemented Odum&rsquo;s prohibition on
+    re-adding co-products, taking a maximum over pathways descending from a common co-production
+    &mdash; the rule GSSK is
+    <a href="/research" class="text-[var(--e-accent)] underline underline-offset-2">missing</a>.
+    It got that rule cheaply because it enumerated pathways, which is the same choice that made it
+    scale badly, and the trade between the two designs is the most useful thing the paper has to
+    say to this one.
+  </p>
+  <p class="mt-4 leading-relaxed text-[var(--e-muted)]">
+    <a
+      href="https://github.com/energese-project/energese-project.github.io/blob/main/doco/article.tex"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="text-[var(--e-accent)] underline underline-offset-2"
+      >Read the full analysis &rarr;</a
+    >
+  </p>
+
   <h2 class="mt-14 text-xl font-semibold tracking-tight">Reference</h2>
   <p class="mt-4 leading-relaxed text-[var(--e-muted)]">
     Odum, H.T. &amp; Odum, E.C. (2000). <em>Modeling for All Scales: An Introduction to System
     Simulation.</em> Academic Press.
+  </p>
+  <p class="mt-3 leading-relaxed text-[var(--e-muted)]">
+    Valyi, R. &amp; Ortega, E. (2004). Emergy simulator, an open source simulation platform
+    dedicated to systems ecology and emergy studies. In Ortega, E. &amp; Ulgiati, S. (eds),
+    <em>Proceedings of the IV Biennial International Workshop &ldquo;Advances in Energy
+    Studies&rdquo;</em>, 349&ndash;360. Unicamp, Campinas, SP, Brazil.
   </p>
 </section>
