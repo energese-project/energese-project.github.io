@@ -194,7 +194,7 @@ export class Router {
         <p class="font-mono text-6xl font-bold text-[var(--e-accent)]">404</p>
         <h1 class="mt-4 text-2xl font-semibold">No such page</h1>
         <p class="mt-2 text-[var(--e-muted)]">That path is not part of this site.</p>
-        <a href="/" class="mt-8 inline-block rounded-lg bg-[var(--e-ink)] px-5 py-2.5 text-sm font-medium text-white">Back to the homepage</a>
+        <a href="/" class="mt-8 inline-block rounded-lg bg-[var(--e-accent)] px-5 py-2.5 text-sm font-medium text-[var(--e-ground)]">Back to the homepage</a>
       </div>
     `;
   }
